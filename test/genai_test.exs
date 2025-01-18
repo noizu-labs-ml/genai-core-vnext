@@ -1,10 +1,12 @@
 defmodule GenAITest do
   # import GenAI.Test.Support.Common
-    use ExUnit.Case
+    use ExUnit.Case,
+        async: true
     require Logger
     doctest GenAI
 
-    def context() do
+    
+    defp context() do
       Noizu.Context.system()
     end
 

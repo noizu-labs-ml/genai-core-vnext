@@ -1,7 +1,8 @@
 # intellij
-.envrc
 .idea/
-genai.iml
+
+# direnv
+.envrc
 
 # test assets
 priv/
