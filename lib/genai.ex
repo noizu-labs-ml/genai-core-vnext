@@ -1,3 +1,3 @@
 defmodule GenAI do
-    @moduledoc false
+  @moduledoc false
 end

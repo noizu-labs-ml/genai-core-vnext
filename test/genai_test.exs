@@ -1,16 +1,17 @@
 defmodule GenAITest do
   # import GenAI.Test.Support.Common
-    use ExUnit.Case,
-        async: true
-    require Logger
-    doctest GenAI
+  use ExUnit.Case,
+    async: true
 
-    
-    defp context() do
-      Noizu.Context.system()
-    end
+  require Logger
+  doctest GenAI
 
-    test "stub" do
-        assert 1 == 1
-    end
+#  defp context(options \\ nil)
+#  defp context(_) do
+#    Noizu.Context.system()
+#  end
+
+  test "stub" do
+    assert 1 == 1
+  end
 end

@@ -1,11 +1,11 @@
 # intellij
-.idea/
+/.idea/
 
 # direnv
 .envrc
 
 # test assets
-priv/
+/priv/
 
 # The directory Mix will write compiled artifacts to.
 /_build/
