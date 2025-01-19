@@ -1,4 +1,4 @@
-defmodule GenAI.Graph.Types do
+defmodule GenAI.Types.Graph do
   @moduledoc """
   GenAI.Graph Type Declarations.
   """

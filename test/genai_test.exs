@@ -6,10 +6,10 @@ defmodule GenAITest do
   require Logger
   doctest GenAI
 
-#  defp context(options \\ nil)
-#  defp context(_) do
-#    Noizu.Context.system()
-#  end
+  #  defp context(options \\ nil)
+  #  defp context(_) do
+  #    Noizu.Context.system()
+  #  end
 
   test "stub" do
     assert 1 == 1

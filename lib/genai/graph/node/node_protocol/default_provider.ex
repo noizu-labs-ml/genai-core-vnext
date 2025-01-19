@@ -5,11 +5,11 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   """
 
   alias GenAI.Graph.Link
-  alias GenAI.Graph.Link.Records, as: R
   alias GenAI.Graph.Types, as: G
+  alias GenAI.Records, as: R
   alias GenAI.Types, as: T
 
-  require GenAI.Graph.Link.Records
+  require GenAI.Records.Link
 
   # -------------------------
   # id/1
@@ -186,10 +186,10 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
          {:ok, target} <- Link.target_connector(link) do
       # 1. For Source Node
       graph_node =
-        if R.connector(source, :node) == graph_node.id do
+        if R.Link.connector(source, :node) == graph_node.id do
           update_in(
             graph_node,
-            [Access.key(:outbound_links), R.connector(source, :socket)],
+            [Access.key(:outbound_links), R.Link.connector(source, :socket)],
             &Enum.uniq([link_id | &1 || []])
           )
         else
@@ -198,10 +198,10 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
 
       # 2. For Target Node
       graph_node =
-        if R.connector(target, :node) == graph_node.id do
+        if R.Link.connector(target, :node) == graph_node.id do
           update_in(
             graph_node,
-            [Access.key(:inbound_links), R.connector(target, :socket)],
+            [Access.key(:inbound_links), R.Link.connector(target, :socket)],
             &Enum.uniq([link_id | &1 || []])
           )
         else

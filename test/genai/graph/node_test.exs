@@ -1,12 +1,13 @@
 defmodule GenAI.Graph.NodeTest do
   # import GenAI.Test.Support.Common
   use ExUnit.Case,
-      async: true
+    async: true
+
+  # alias GenAI.Records, as: R
+
   require Logger
-  require GenAI.Graph.Link.Records
-  #alias GenAI.Graph.Link.Records, as: R
-  
+  require GenAI.Records.Link
+
   doctest GenAI.Graph.Node
   doctest GenAI.Graph.NodeProtocol
-
 end

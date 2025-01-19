@@ -27,8 +27,8 @@ defmodule GenAI.Graph.Node do
 end
 
 defimpl GenAI.Graph.MermaidProtocol, for: GenAI.Graph.Node do
-  require GenAI.Graph.Link.Records
-  alias GenAI.Graph.Link.Records, as: R
+  require GenAI.Records.Link
+  alias GenAI.Records, as: R
 
   @spec mermaid_id(GenAI.Graph.Node.t()) :: String.t()
   def mermaid_id(subject) do
@@ -82,7 +82,7 @@ defimpl GenAI.Graph.MermaidProtocol, for: GenAI.Graph.Node do
           fn link_id ->
             # TODO - Node protocol needs to return a get_link method that accepts node, container
             {:ok, link} = GenAI.Graph.link(container, link_id)
-            {:ok, R.connector(node: n)} = GenAI.Graph.Link.target_connector(link)
+            {:ok, R.Link.connector(node: n)} = GenAI.Graph.Link.target_connector(link)
             "#{identifier} --> #{GenAI.Graph.MermaidProtocol.Helpers.mermaid_id(n)}"
           end
         )

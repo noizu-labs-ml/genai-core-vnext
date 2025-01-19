@@ -7,25 +7,24 @@ defmodule GenAI.Graph do
   use GenAI.Graph.NodeBehaviour
 
   alias GenAI.Graph.Link
-  alias GenAI.Graph.Link.Records, as: R
   alias GenAI.Graph.NodeProtocol
-  alias GenAI.Graph.Types, as: G
+  alias GenAI.Records, as: R
   alias GenAI.Types, as: T
   # alias GenAI.Session.NodeProtocol.Records, as: Node
-  require GenAI.Graph.Link.Records
-  require GenAI.Graph.Types
+  require GenAI.Records.Link
+  require GenAI.Types.Graph
   # require GenAI.Session.NodeProtocol.Records
 
   @derive GenAI.Graph.NodeProtocol
   # @derive GenAI.Session.NodeProtocol
   defnodetype(
-    nodes: %{G.graph_node_id() => G.graph_node()},
-    node_handles: %{T.handle() => G.graph_node_id()},
-    links: %{G.graph_link_id() => G.graph_link()},
-    link_handles: %{T.handle() => G.graph_link_id()},
-    head: G.graph_node_id() | nil,
-    last_node: G.graph_node_id() | nil,
-    last_link: G.graph_link_id() | nil
+    nodes: %{T.Graph.graph_node_id() => T.Graph.graph_node()},
+    node_handles: %{T.handle() => T.Graph.graph_node_id()},
+    links: %{T.Graph.graph_link_id() => T.Graph.graph_link()},
+    link_handles: %{T.handle() => T.Graph.graph_link_id()},
+    head: T.Graph.graph_node_id() | nil,
+    last_node: T.Graph.graph_node_id() | nil,
+    last_link: T.Graph.graph_link_id() | nil
   )
 
   defnodestruct(
@@ -150,14 +149,15 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.node(graph, UUID.uuid4())
       {:error, {:node, :not_found}}
   """
-  @spec node(graph :: G.graph(), id :: G.graph_node_id()) :: T.result(G.graph_node(), T.details())
+  @spec node(graph :: T.Graph.graph(), id :: T.Graph.graph_node_id()) ::
+          T.result(T.Graph.graph_node(), T.details())
   def node(graph, graph_node)
 
-  def node(graph, R.connector(node: id)) do
+  def node(graph, R.Link.connector(node: id)) do
     node(graph, id)
   end
 
-  def node(graph, graph_node) when G.is_node_id(graph_node) do
+  def node(graph, graph_node) when T.Graph.is_node_id(graph_node) do
     if x = graph.nodes[graph_node] do
       {:ok, x}
     else
@@ -174,8 +174,8 @@ defmodule GenAI.Graph do
   # -------------------------
   # node/2
   # -------------------------
-  @spec nodes(G.graph()) :: {:ok, list(G.graph_node())}
-  @spec nodes(G.graph(), keyword) :: {:ok, list(G.graph_node())}
+  @spec nodes(T.Graph.graph()) :: {:ok, list(T.Graph.graph_node())}
+  @spec nodes(T.Graph.graph(), keyword) :: {:ok, list(T.Graph.graph_node())}
   def nodes(graph, options \\ nil)
 
   def nodes(graph, _) do
@@ -186,8 +186,8 @@ defmodule GenAI.Graph do
   # -------------------------
   # node!/2
   # -------------------------
-  @spec nodes!(G.graph()) :: list(G.graph_node())
-  @spec nodes!(G.graph(), keyword) :: list(G.graph_node())
+  @spec nodes!(T.Graph.graph()) :: list(T.Graph.graph_node())
+  @spec nodes!(T.Graph.graph(), keyword) :: list(T.Graph.graph_node())
   def nodes!(graph, options \\ nil)
 
   def nodes!(graph, _) do
@@ -219,10 +219,11 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.link(graph, UUID.uuid4())
       {:error, {:link, :not_found}}
   """
-  @spec link(graph :: G.graph(), id :: G.graph_link_id()) :: T.result(G.graph_link(), T.details())
+  @spec link(graph :: T.Graph.graph(), id :: T.Graph.graph_link_id()) ::
+          T.result(T.Graph.graph_link(), T.details())
   def link(graph, graph_link)
 
-  def link(graph, graph_link) when G.is_link_id(graph_link) do
+  def link(graph, graph_link) when T.Graph.is_link_id(graph_link) do
     if x = graph.links[graph_link] do
       {:ok, x}
     else
@@ -255,10 +256,10 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.member?(graph, UUID.uuid4())
       false
   """
-  @spec member?(graph :: G.graph(), id :: G.graph_node_id()) :: boolean
+  @spec member?(graph :: T.Graph.graph(), id :: T.Graph.graph_node_id()) :: boolean
   def member?(graph, graph_node)
 
-  def member?(graph, graph_node) when G.is_node_id(graph_node) do
+  def member?(graph, graph_node) when T.Graph.is_node_id(graph_node) do
     (graph.nodes[graph_node] && true) || false
   end
 
@@ -289,8 +290,8 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.by_handle(graph, :foo)
       {:error, {:handle, :not_found}}
   """
-  @spec by_handle(graph :: G.graph(), handle :: T.handle()) ::
-          T.result(G.graph_node(), T.details())
+  @spec by_handle(graph :: T.Graph.graph(), handle :: T.handle()) ::
+          T.result(T.Graph.graph_node(), T.details())
   def by_handle(graph, handle)
 
   def by_handle(graph, handle) do
@@ -326,8 +327,8 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.link_by_handle(graph, :bar)
       {:error, {:handle, :not_found}}
   """
-  @spec link_by_handle(graph :: G.graph(), handle :: T.handle()) ::
-          T.result(G.graph_link(), T.details())
+  @spec link_by_handle(graph :: T.Graph.graph(), handle :: T.handle()) ::
+          T.result(T.Graph.graph_link(), T.details())
   def link_by_handle(graph, handle)
 
   def link_by_handle(graph, handle) do
@@ -341,7 +342,7 @@ defmodule GenAI.Graph do
   # -------------------------
   # head/1
   # -------------------------
-  @spec head(G.graph()) :: T.result(G.graph_node(), T.details())
+  @spec head(T.Graph.graph()) :: T.result(T.Graph.graph_node(), T.details())
   def head(graph)
   def head(%__MODULE__{head: nil}), do: {:error, {:head, :is_nil}}
   def head(%__MODULE__{head: x} = graph), do: node(graph, x)
@@ -349,7 +350,7 @@ defmodule GenAI.Graph do
   # -------------------------
   # last_node/1
   # -------------------------
-  @spec last_node(G.graph()) :: T.result(G.graph_node(), T.details())
+  @spec last_node(T.Graph.graph()) :: T.result(T.Graph.graph_node(), T.details())
   def last_node(graph)
   def last_node(%__MODULE__{last_node: nil}), do: {:error, {:last_node, :is_nil}}
   def last_node(%__MODULE__{last_node: x} = graph), do: node(graph, x)
@@ -357,12 +358,13 @@ defmodule GenAI.Graph do
   # -------------------------
   # last_link/1
   # -------------------------
-  @spec last_link(G.graph()) :: T.result(G.graph_link(), T.details())
+  @spec last_link(T.Graph.graph()) :: T.result(T.Graph.graph_link(), T.details())
   def last_link(graph)
   def last_link(%__MODULE__{last_link: nil}), do: {:error, {:last_link, :is_nil}}
   def last_link(%__MODULE__{last_link: x} = graph), do: link(graph, x)
 
-  @spec attempt_set_handle(G.graph(), G.graph_node_id(), G.graph_node()) :: G.graph()
+  @spec attempt_set_handle(T.Graph.graph(), T.Graph.graph_node_id(), T.Graph.graph_node()) ::
+          T.Graph.graph()
   defp attempt_set_handle(graph, id, node) do
     with {:ok, handle} <- NodeProtocol.handle(node) do
       if graph.node_handles[handle] do
@@ -377,7 +379,8 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec attempt_set_head(G.graph(), G.graph_node_id(), G.graph_node(), keyword) :: G.graph()
+  @spec attempt_set_head(T.Graph.graph(), T.Graph.graph_node_id(), T.Graph.graph_node(), keyword) ::
+          T.Graph.graph()
   defp attempt_set_head(graph, id, node, options)
 
   defp attempt_set_head(graph, id, _, options) do
@@ -388,7 +391,12 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec attempt_set_last_node(G.graph(), G.graph_node_id(), G.graph_node(), keyword) :: G.graph()
+  @spec attempt_set_last_node(
+          T.Graph.graph(),
+          T.Graph.graph_node_id(),
+          T.Graph.graph_node(),
+          keyword
+        ) :: T.Graph.graph()
   defp attempt_set_last_node(graph, id, node, options)
 
   defp attempt_set_last_node(graph, id, _, options) do
@@ -399,7 +407,7 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec auto_link_setting(G.graph(), keyword) :: any
+  @spec auto_link_setting(T.Graph.graph(), keyword) :: any
   defp auto_link_setting(graph, options) do
     case options[:link] do
       true ->
@@ -426,12 +434,12 @@ defmodule GenAI.Graph do
   end
 
   @spec attempt_auto_link(
-          G.graph(),
-          G.graph_node_id(),
-          G.graph_node_id(),
-          G.graph_node(),
+          T.Graph.graph(),
+          T.Graph.graph_node_id(),
+          T.Graph.graph_node_id(),
+          T.Graph.graph_node(),
           keyword
-        ) :: G.graph()
+        ) :: T.Graph.graph()
   defp attempt_auto_link(graph, from_node, node_id, node, options)
 
   defp attempt_auto_link(graph, from_node, node_id, _, options) do
@@ -466,7 +474,8 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec attempt_set_node(G.graph(), G.graph_node_id(), G.graph_node(), keyword) :: G.graph()
+  @spec attempt_set_node(T.Graph.graph(), T.Graph.graph_node_id(), T.Graph.graph_node(), keyword) ::
+          T.Graph.graph()
   def attempt_set_node(graph, node_id, graph_node, options)
 
   def attempt_set_node(graph, node_id, graph_node, _) do
@@ -494,8 +503,8 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.member?(graph, node.id)
       true
   """
-  @spec attach_node(graph :: G.graph(), node :: G.graph_node(), options :: map) ::
-          T.result(G.graph(), T.details())
+  @spec attach_node(graph :: T.Graph.graph(), node :: T.Graph.graph_node(), options :: map) ::
+          T.result(T.Graph.graph(), T.details())
   def attach_node(graph, graph_node, options \\ nil)
 
   def attach_node(graph, graph_node, options) do
@@ -523,8 +532,8 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.member?(graph, node.id)
       true
   """
-  @spec add_node(graph :: G.graph(), node :: G.graph_node(), options :: map) ::
-          T.result(G.graph(), T.details())
+  @spec add_node(graph :: T.Graph.graph(), node :: T.Graph.graph_node(), options :: map) ::
+          T.result(T.Graph.graph(), T.details())
   def add_node(graph, graph_node, options \\ nil)
 
   def add_node(graph, graph_node, options) do
@@ -540,9 +549,9 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec local_reference?(G.graph_link(), G.graph_link()) :: boolean
+  @spec local_reference?(T.Graph.graph_link(), T.Graph.graph_link()) :: boolean
   defp local_reference?(source, target) do
-    if R.connector(source, :external) && R.connector(target, :external) do
+    if R.Link.connector(source, :external) && R.Link.connector(target, :external) do
       false
     else
       true
@@ -568,8 +577,8 @@ defmodule GenAI.Graph do
       ...> GenAI.Graph.link(graph, link.id)
       {:ok, link}
   """
-  @spec add_link(graph :: G.graph(), link :: G.graph_link(), options :: map) ::
-          T.result(G.graph(), T.details())
+  @spec add_link(graph :: T.Graph.graph(), link :: T.Graph.graph_link(), options :: map) ::
+          T.result(T.Graph.graph(), T.details())
   def add_link(graph, graph_link, options \\ nil)
 
   def add_link(graph, graph_link, options) do
@@ -590,7 +599,8 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec attempt_set_link(G.graph(), G.graph_link_id(), G.graph_link(), keyword) :: G.graph()
+  @spec attempt_set_link(T.Graph.graph(), T.Graph.graph_link_id(), T.Graph.graph_link(), keyword) ::
+          T.Graph.graph()
   defp attempt_set_link(graph, link_id, graph_link, options)
 
   defp attempt_set_link(graph, link_id, graph_link, _) do
@@ -610,7 +620,12 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec attempt_set_last_link(G.graph(), G.graph_link_id(), G.graph_link(), keyword) :: G.graph()
+  @spec attempt_set_last_link(
+          T.Graph.graph(),
+          T.Graph.graph_link_id(),
+          T.Graph.graph_link(),
+          keyword
+        ) :: T.Graph.graph()
   defp attempt_set_last_link(graph, link_id, graph_link, options)
 
   defp attempt_set_last_link(graph, link_id, _, options) do
@@ -621,12 +636,17 @@ defmodule GenAI.Graph do
     end
   end
 
-  @spec attempt_register_link(G.graph(), G.graph_link(), G.graph_link(), keyword) :: G.graph()
+  @spec attempt_register_link(
+          T.Graph.graph(),
+          T.Graph.graph_link(),
+          T.Graph.graph_link(),
+          keyword
+        ) :: T.Graph.graph()
   defp attempt_register_link(graph, connector, link, options) do
-    connector_node_id = R.connector(connector, :node)
+    connector_node_id = R.Link.connector(connector, :node)
 
     cond do
-      R.connector(connector, :external) ->
+      R.Link.connector(connector, :external) ->
         graph
 
       member?(graph, connector_node_id) ->

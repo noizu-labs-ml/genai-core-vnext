@@ -1,4 +1,4 @@
-defmodule GenAI.Graph.Link.Records do
+defmodule GenAI.Records.Link do
   @moduledoc """
   Records related to graph links.
   """
