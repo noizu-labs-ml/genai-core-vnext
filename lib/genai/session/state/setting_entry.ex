@@ -41,9 +41,15 @@ defmodule GenAI.Session.State.SettingEntry do
   def expired?(this, context, options)
 
   def expired?(this = %__MODULE__{}, _, _) do
-    # TODO - [ ] TTL Checks
-    # Update entry in state mark effective expired to avoid need for recalculation.
-    {false, this}
+    case this.effective do
+      R.Session.effective_value(expired?: false) ->
+        # TODO - [ ] TTL Checks
+        # Update entry in state mark effective expired to avoid need for recalculation.
+        {false, this}
+
+      _ ->
+        {true, this}
+    end
   end
 
   # ------------------------
@@ -75,12 +81,17 @@ defmodule GenAI.Session.State.SettingEntry do
           {expired?, updated_session_state, updated_memo}
         } = do_reference_expired(this.references, session_state, context, options, memo)
 
-        {expired?,
-         {
-           %__MODULE__{this | references: updated_references},
-           updated_session_state,
-           updated_memo
-         }}
+        effective =
+          case expired?, this.effective do
+            {false, _} -> this.effective
+            {e, x = R.Session.effective_value()} -> R.Session.effective_value(x, expired?: e)
+            {_, x} -> x
+          end
+
+        update = %__MODULE__{this | references: updated_references, effective: effective}
+
+        # Return
+        {expired?, {update, updated_session_state, updated_memo}}
     end
   end
 
@@ -106,4 +117,82 @@ defmodule GenAI.Session.State.SettingEntry do
       end
     )
   end
+
+  # -------------------------
+  # effective_value/5
+  # -------------------------
+  @doc """
+  Calculate or returned cached effective value for a given setting.
+
+  ## Note
+
+  If selector depends on input of other settings/artifacts (like chat thread) it will in turn insure dependencies are resolved.
+
+  TODO - default value support
+  """
+  @spec effective_value(
+          __MODULE__.t(),
+          R.Session.state(),
+          R.Session.context(),
+          R.Session.options()
+        ) ::
+          {{:ok, value :: term} | {:error, term},
+           {__MODULE__.t(), R.Session.state(), memo :: map()}}
+  @spec effective_value(
+          __MODULE__.t(),
+          R.Session.state(),
+          R.Session.context(),
+          R.Session.options(),
+          memo :: map()
+        ) ::
+          {{:ok, value :: term} | {:error, term},
+           {__MODULE__.t(), R.Session.state(), memo :: map()}}
+  def effective_setting(this, state, context, options, memo \\ %{})
+
+  def effective_setting(nil, _, _, _, _) do
+    {:error, :unset}
+  end
+
+  def effective_setting(this, state, context, options, memo) do
+    with {false, {this = %{effective: R.Session.effective_value(value: value)}, state, memo}} <-
+           reference_expired?(this, state, context, options, memo) do
+      {{:ok, value}, {this, state, memo}}
+    else
+      {_, this, state, memo} ->
+        do_effective_setting(this, state, context, options, memo)
+    end
+  end
+
+  defp do_effective_setting(this, state, context, options, memo) do
+    {{:ok, :wip}, {this, state, memo}}
+  end
+
+  # TODO do_effective_setting implementation
+  # TODO load_references
+  # TODO mark_reference
+  # TODO mark_references
+  # TODO apply_selector
+  # TODO apply_constraint
+
+  #
+  #  def effective_setting(this, default, state, context, options)
+  #  def effective_setting(nil, default, state, context, options) do
+  #    {:ok, {default, state}}
+  #  end
+  #  def effective_setting(this, default, state, context, options) do
+  #    # @TODO cyclic loop protection.
+  #    cond do
+  #      is_nil(this.effective) || effective_expired?(this.effective, state, context, options) ->
+  #        case do_effective_setting(this, this.selectors, state, context, options) do
+  #          {:error, :unresolved} -> {:ok, {default, state}}
+  #          {:error, :unset} -> {:ok, {default, state}}
+  #          {:ok, {value, state}} -> {:ok, {value, state}}
+  #        end
+  #      :else ->
+  #        case this.effective do
+  #          effective_value(value: {:concrete, value}) ->
+  #            {:ok, {value, state}}
+  #        end
+  #    end
+  #  end
 end

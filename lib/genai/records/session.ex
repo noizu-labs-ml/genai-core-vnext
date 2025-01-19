@@ -195,6 +195,7 @@ defmodule GenAI.Records.Session do
     handle: nil,
     value: nil,
     finger_print: nil,
+    expired?: false,
     inserted_at: nil,
     updated_at: nil
   )
