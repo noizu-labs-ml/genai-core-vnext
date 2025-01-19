@@ -33,7 +33,7 @@ defmodule GenAI.Helpers do
   """
   @spec on_error({:ok, any} | {:error, any}, atom, any) :: any
   def on_error(response, action, value)
-  def on_error({:ok, _} = response, _, _), do: response
+  def on_error(response = {:ok, _}, _, _), do: response
   def on_error({:error, _}, :return_value, value), do: {:ok, value}
   def on_error({:error, _}, :return_error, value), do: {:error, value}
   def on_error({:error, _}, :return, value), do: value

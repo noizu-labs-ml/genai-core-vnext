@@ -12,11 +12,12 @@ defmodule GenAI.Session.State.SettingEntry do
   Any other options current entry depends on are recursively processed as well.
   """
   alias GenAI.Records, as: R
+  alias GenAI.Session.State
 
   require GenAI.Records.Session
 
   defstruct name: nil,
-            effective: R.Session.effective_value(),
+            effective: nil,
             selectors: [],
             constraints: [],
             references: [],
@@ -25,11 +26,84 @@ defmodule GenAI.Session.State.SettingEntry do
 
   @type t :: %__MODULE__{
           name: term,
-          effective: list(term),
-          selectors: list(term),
-          constraints: list(term),
+          effective: R.Session.effective_value() | nil,
+          selectors: list(R.Session.selector()),
+          constraints: list(R.Session.constraint()),
           references: list(term),
           impacts: list(term),
           updated_on: DateTime.t() | nil
         }
+
+  # -------------------------
+  # effective_expired?/4
+  # -------------------------
+  @spec expired?(__MODULE__.t(), term, term) :: boolean
+  def expired?(this, context, options)
+
+  def expired?(this = %__MODULE__{}, _, _) do
+    # TODO - [ ] TTL Checks
+    # Update entry in state mark effective expired to avoid need for recalculation.
+    {false, this}
+  end
+
+  # ------------------------
+  # reference_expired?/5
+  # ------------------------
+  @spec reference_expired?(
+          __MODULE__.t(),
+          R.Session.state(),
+          R.Session.context(),
+          R.Session.options()
+        ) :: {boolean, {__MODULE__.t(), R.Session.state(), Map.t()}}
+  @spec reference_expired?(
+          __MODULE__.t(),
+          R.Session.state(),
+          R.Session.context(),
+          R.Session.options(),
+          Map.t()
+        ) :: {boolean, {__MODULE__.t(), R.Session.state(), Map.t()}}
+  def reference_expired?(this, session_state, context, options, memo \\ %{})
+
+  def reference_expired?(this = %__MODULE__{}, session_state, context, options, memo) do
+    case expired?(this, context, options) do
+      {true, this} ->
+        {true, {this, session_state, memo}}
+
+      {false, this} ->
+        {
+          updated_references,
+          {expired?, updated_session_state, updated_memo}
+        } = do_reference_expired(this.references, session_state, context, options, memo)
+
+        {expired?,
+         {
+           %__MODULE__{this | references: updated_references},
+           updated_session_state,
+           updated_memo
+         }}
+    end
+  end
+
+  defp do_reference_expired(references, session_state, context, options, memo) do
+    Enum.map_reduce(
+      references,
+      {false, session_state, memo},
+      fn
+        reference, {false, acc_session_state, acc_memo} ->
+          {expired?, {updated_reference, acc_session_state, acc_memo}} =
+            State.reference_expired?(
+              reference,
+              acc_session_state,
+              context,
+              options,
+              acc_memo
+            )
+
+          {updated_reference, {expired?, acc_session_state, acc_memo}}
+
+        reference, acc = {true, _, _} ->
+          {reference, acc}
+      end
+    )
+  end
 end

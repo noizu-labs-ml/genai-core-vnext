@@ -758,7 +758,7 @@ defmodule GenAI.Graph.Link do
   # Internal
   # =============================================================================
 
-  defp to_connector(R.Link.connector() = value), do: value
+  defp to_connector(value = R.Link.connector()), do: value
   defp to_connector(nil), do: R.Link.connector(node: nil, socket: :default, external: true)
 
   defp to_connector(value) when T.Graph.is_node_id(value),

@@ -345,7 +345,7 @@ defmodule GenAI.Graph do
   @spec head(T.Graph.graph()) :: T.result(T.Graph.graph_node(), T.details())
   def head(graph)
   def head(%__MODULE__{head: nil}), do: {:error, {:head, :is_nil}}
-  def head(%__MODULE__{head: x} = graph), do: node(graph, x)
+  def head(graph = %__MODULE__{head: x}), do: node(graph, x)
 
   # -------------------------
   # last_node/1
@@ -353,7 +353,7 @@ defmodule GenAI.Graph do
   @spec last_node(T.Graph.graph()) :: T.result(T.Graph.graph_node(), T.details())
   def last_node(graph)
   def last_node(%__MODULE__{last_node: nil}), do: {:error, {:last_node, :is_nil}}
-  def last_node(%__MODULE__{last_node: x} = graph), do: node(graph, x)
+  def last_node(graph = %__MODULE__{last_node: x}), do: node(graph, x)
 
   # -------------------------
   # last_link/1
@@ -361,7 +361,7 @@ defmodule GenAI.Graph do
   @spec last_link(T.Graph.graph()) :: T.result(T.Graph.graph_link(), T.details())
   def last_link(graph)
   def last_link(%__MODULE__{last_link: nil}), do: {:error, {:last_link, :is_nil}}
-  def last_link(%__MODULE__{last_link: x} = graph), do: link(graph, x)
+  def last_link(graph = %__MODULE__{last_link: x}), do: link(graph, x)
 
   @spec attempt_set_handle(T.Graph.graph(), T.Graph.graph_node_id(), T.Graph.graph_node()) ::
           T.Graph.graph()

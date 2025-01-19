@@ -15,7 +15,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # id/1
   # -------------------------
   @spec id(G.graph_node()) :: T.result(G.graph_node_id(), T.details())
-  def id(%{__struct__: module} = graph_node) do
+  def id(graph_node = %{__struct__: module}) do
     if Code.ensure_loaded?(module) and function_exported?(module, :id, 1) do
       module.id(graph_node)
     else
@@ -32,7 +32,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # handle/1
   # -------------------------
   @spec handle(G.graph_node()) :: T.result(T.handle(), T.details())
-  def handle(%{__struct__: module} = graph_node) do
+  def handle(graph_node = %{__struct__: module}) do
     if Code.ensure_loaded?(module) and function_exported?(module, :handle, 1) do
       module.handle(graph_node)
     else
@@ -49,7 +49,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # handle/2
   # -------------------------
   @spec handle(G.graph_node(), T.handle()) :: T.result(T.handle(), T.details())
-  def handle(%{__struct__: module} = graph_node, default) do
+  def handle(graph_node = %{__struct__: module}, default) do
     if Code.ensure_loaded?(module) and function_exported?(module, :handle, 2) do
       module.handle(graph_node, default)
     else
@@ -66,7 +66,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # name/1
   # -------------------------
   @spec name(G.graph_node()) :: T.result(T.name(), T.details())
-  def name(%{__struct__: module} = graph_node) do
+  def name(graph_node = %{__struct__: module}) do
     if Code.ensure_loaded?(module) and function_exported?(module, :name, 1) do
       module.name(graph_node)
     else
@@ -83,7 +83,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # name/2
   # -------------------------
   @spec name(G.graph_node(), T.name()) :: T.result(T.name(), T.details())
-  def name(%{__struct__: module} = graph_node, default) do
+  def name(graph_node = %{__struct__: module}, default) do
     if Code.ensure_loaded?(module) and function_exported?(module, :name, 2) do
       module.name(graph_node, default)
     else
@@ -100,7 +100,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # description/1
   # -------------------------
   @spec description(G.graph_node()) :: T.result(T.description(), T.details())
-  def description(%{__struct__: module} = graph_node) do
+  def description(graph_node = %{__struct__: module}) do
     if Code.ensure_loaded?(module) and function_exported?(module, :description, 1) do
       module.description(graph_node)
     else
@@ -117,7 +117,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # description/2
   # -------------------------
   @spec description(G.graph_node(), T.description()) :: T.result(T.description(), T.details())
-  def description(%{__struct__: module} = graph_node, default) do
+  def description(graph_node = %{__struct__: module}, default) do
     if Code.ensure_loaded?(module) and function_exported?(module, :description, 2) do
       module.description(graph_node, default)
     else
@@ -134,7 +134,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # with_id/2
   # -------------------------
   @spec with_id(G.graph_node()) :: T.result(G.graph_node(), T.details())
-  def with_id(%{__struct__: module} = graph_node) do
+  def with_id(graph_node = %{__struct__: module}) do
     if Code.ensure_loaded?(module) and function_exported?(module, :with_id, 1) do
       module.with_id(graph_node)
     else
@@ -168,7 +168,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # -------------------------
   @spec register_link(G.graph_node(), G.graph(), G.graph_link(), map) ::
           T.result(G.graph_node(), T.details())
-  def register_link(%{__struct__: module} = graph_node, graph, link, options) do
+  def register_link(graph_node = %{__struct__: module}, graph, link, options) do
     if Code.ensure_loaded?(module) and function_exported?(module, :register_link, 4) do
       module.register_link(graph_node, graph, link, options)
     else
@@ -216,7 +216,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # outbound_links/4
   # -------------------------
   @spec outbound_links(G.graph_node(), G.graph(), map) :: {:ok, map} | {:error, term}
-  def outbound_links(%{__struct__: module} = graph_node, graph, options) do
+  def outbound_links(graph_node = %{__struct__: module}, graph, options) do
     if Code.ensure_loaded?(module) and function_exported?(module, :outbound_links, 3) do
       module.outbound_links(graph_node, graph, options)
     else
@@ -253,7 +253,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
   # inbound_links/4
   # -------------------------
   @spec inbound_links(G.graph_node(), G.graph(), map) :: {:ok, map} | {:error, term}
-  def inbound_links(%{__struct__: module} = graph_node, graph, options) do
+  def inbound_links(graph_node = %{__struct__: module}, graph, options) do
     if Code.ensure_loaded?(module) and function_exported?(module, :inbound_links, 3) do
       module.inbound_links(graph_node, graph, options)
     else
