@@ -100,7 +100,6 @@ defmodule GenAI.MixProject do
       # {:ymlr, "~> 4.0"},
       # {:yaml_elixir, "~> 2.9.0"},
       # {:sweet_xml, "~> 0.7", only: :test},
-      {:credo, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
 
     common ++ test_deps ++ hex_deps
