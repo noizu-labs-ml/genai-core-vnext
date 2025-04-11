@@ -82,7 +82,7 @@ defmodule GenAI.Session.State.SettingEntry do
         } = do_reference_expired(this.references, session_state, context, options, memo)
 
         effective =
-          case expired?, this.effective do
+          case {expired?, this.effective} do
             {false, _} -> this.effective
             {e, x = R.Session.effective_value()} -> R.Session.effective_value(x, expired?: e)
             {_, x} -> x
@@ -130,7 +130,7 @@ defmodule GenAI.Session.State.SettingEntry do
 
   TODO - default value support
   """
-  @spec effective_value(
+  @spec effective_setting(
           __MODULE__.t(),
           R.Session.state(),
           R.Session.context(),
@@ -138,7 +138,7 @@ defmodule GenAI.Session.State.SettingEntry do
         ) ::
           {{:ok, value :: term} | {:error, term},
            {__MODULE__.t(), R.Session.state(), memo :: map()}}
-  @spec effective_value(
+  @spec effective_setting(
           __MODULE__.t(),
           R.Session.state(),
           R.Session.context(),
