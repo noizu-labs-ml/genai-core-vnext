@@ -1,9 +1,9 @@
 # ===============================================================================
 # Copyright (c) 2025, Noizu Labs, Inc.
 # ===============================================================================
-defmodule GenAI.Records.Session do
+defmodule VNextGenAI.Records.Session do
   @moduledoc """
-  Records used by for preparing/encoding GenAI.Session
+  Records used by for preparing/encoding VNextGenAI.Session
   """
 
   require Record

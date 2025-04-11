@@ -1,45 +1,45 @@
-defmodule GenAI.Types.Graph do
+defmodule VNextGenAI.Types.Graph do
   @moduledoc """
-  GenAI.Graph Type Declarations.
+  VNextGenAI.Graph Type Declarations.
   """
 
   @typedoc """
-  A GenAI.Graph Object
+  A VNextGenAI.Graph Object
   """
   @type graph :: term
 
   @typedoc """
-  A GenAI.Graph Object Identifier
+  A VNextGenAI.Graph Object Identifier
   """
   @type graph_id :: term
 
   @typedoc """
-  A GenAI.Graph Link Object
+  A VNextGenAI.Graph Link Object
   """
   @type graph_link :: term
 
   @typedoc """
-  A GenAI.Graph Link Object Identifier
+  A VNextGenAI.Graph Link Object Identifier
   """
   @type graph_link_id :: term
 
   @typedoc """
-  A GenAI.Graph Node Object
+  A VNextGenAI.Graph Node Object
   """
   @type graph_node :: term
 
   @typedoc """
-  A GenAI.Graph Node Object Identifier
+  A VNextGenAI.Graph Node Object Identifier
   """
   @type graph_node_id :: term
 
   @typedoc """
-  GenAI.Graph Link Type (e.g. comment, path, etc.)
+  VNextGenAI.Graph Link Type (e.g. comment, path, etc.)
   """
   @type link_type :: term
 
   @typedoc """
-  GenAI.Graph Link Label (e.g. "Log Output")
+  VNextGenAI.Graph Link Label (e.g. "Log Output")
   """
   @type link_label :: term
 

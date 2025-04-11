@@ -3,9 +3,9 @@ Please feel free to submit an feature request/issues/clarification items you hav
 
 -----
 
-GenAI Core Library
+VNextGenAI Core Library
 ====
-GenAI Core Elixir Library: A Framework for Interacting with Generative AI.
+VNextGenAI Core Elixir Library: A Framework for Interacting with Generative AI.
 Contains common/core libraries used by genai package and plugins.
 
 ### Contributing

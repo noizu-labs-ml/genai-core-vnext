@@ -2,11 +2,11 @@
 # Copyright (c) 2024, Noizu Labs, Inc.
 # ===============================================================================
 
-defmodule GenAI.Graph.Exception do
+defmodule VNextGenAI.Graph.Exception do
   @moduledoc """
   Generic Graph Exception
   """
   defexception message: nil, details: nil
 end
 
-# end of GenAI.Graph.Exception
+# end of VNextGenAI.Graph.Exception

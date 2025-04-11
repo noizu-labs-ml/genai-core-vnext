@@ -1,6 +1,6 @@
-defmodule GenAI.Types do
+defmodule VNextGenAI.Types do
   @moduledoc """
-  GenAI Types
+  VNextGenAI Types
   """
 
   @typedoc """

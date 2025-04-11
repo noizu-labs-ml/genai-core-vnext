@@ -1,3 +1,3 @@
-defmodule GenAI do
+defmodule VNextGenAI do
   @moduledoc false
 end

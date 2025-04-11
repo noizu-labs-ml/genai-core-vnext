@@ -1,6 +1,6 @@
-## Contributing to the GenAI Elixir Library
+## Contributing to the VNextGenAI Elixir Library
 
-We welcome contributions to the GenAI library! Here are some guidelines to help you get started:
+We welcome contributions to the VNextGenAI library! Here are some guidelines to help you get started:
 
 ### Reporting Issues
 
@@ -35,4 +35,4 @@ Please note that this project is governed by a Code of Conduct. By participating
 
 If you have any questions or need help with contributing, please feel free to open an issue on the GitHub repository or reach out to the maintainers.
 
-We appreciate your contributions to the GenAI library!
+We appreciate your contributions to the VNextGenAI library!

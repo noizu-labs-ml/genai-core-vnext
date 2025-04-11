@@ -2,7 +2,7 @@
 # Copyright (c) 2025, Noizu Labs, Inc.
 # ===============================================================================
 
-defmodule GenAI.Session.State.SettingEntry do
+defmodule VNextGenAI.Session.State.SettingEntry do
   @moduledoc """
   Dynamic Option/Setting Entry.
 
@@ -11,10 +11,10 @@ defmodule GenAI.Session.State.SettingEntry do
   Constraints and Selectors are merged together to get effective value as of that point in time.
   Any other options current entry depends on are recursively processed as well.
   """
-  alias GenAI.Records, as: R
-  alias GenAI.Session.State
+  alias VNextGenAI.Records, as: R
+  alias VNextGenAI.Session.State
 
-  require GenAI.Records.Session
+  require VNextGenAI.Records.Session
 
   defstruct name: nil,
             effective: nil,

@@ -1,15 +1,15 @@
 # ===============================================================================
 # Copyright (c) 2025, Noizu Labs, Inc.
 # ===============================================================================
-defmodule GenAI.Session.State do
+defmodule VNextGenAI.Session.State do
   @moduledoc """
   Represent status/state such as node state, sessions, message thread, etc.
   """
 
-  alias GenAI.Records, as: R
-  alias GenAI.Session.State.SettingEntry
+  alias VNextGenAI.Records, as: R
+  alias VNextGenAI.Session.State.SettingEntry
 
-  require GenAI.Records.Session
+  require VNextGenAI.Records.Session
 
   defstruct directives: [],
             directive_position: 0,

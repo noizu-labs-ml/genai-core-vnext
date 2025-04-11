@@ -1,11 +1,11 @@
-defmodule GenAI.Graph.Node do
+defmodule VNextGenAI.Graph.Node do
   @vsn 1.0
   @moduledoc """
   Represent a node on graph (generic type).
   """
 
-  use GenAI.Graph.NodeBehaviour
-  @derive GenAI.Graph.NodeProtocol
+  use VNextGenAI.Graph.NodeBehaviour
+  @derive VNextGenAI.Graph.NodeProtocol
   defnodestruct(value: nil)
 
   defnodetype(value: term)
@@ -26,34 +26,34 @@ defmodule GenAI.Graph.Node do
   end
 end
 
-defimpl GenAI.Graph.MermaidProtocol, for: GenAI.Graph.Node do
-  require GenAI.Records.Link
-  alias GenAI.Records, as: R
+defimpl VNextGenAI.Graph.MermaidProtocol, for: VNextGenAI.Graph.Node do
+  require VNextGenAI.Records.Link
+  alias VNextGenAI.Records, as: R
 
-  @spec mermaid_id(GenAI.Graph.Node.t()) :: String.t()
+  @spec mermaid_id(VNextGenAI.Graph.Node.t()) :: String.t()
   def mermaid_id(subject) do
-    GenAI.Graph.MermaidProtocol.Helpers.mermaid_id(subject.id)
+    VNextGenAI.Graph.MermaidProtocol.Helpers.mermaid_id(subject.id)
   end
 
-  @spec encode(GenAI.Graph.Node.t()) :: {:ok, String.t()} | {:error, term}
+  @spec encode(VNextGenAI.Graph.Node.t()) :: {:ok, String.t()} | {:error, term}
   def encode(graph_element), do: encode(graph_element, [])
 
-  @spec encode(GenAI.Graph.Node.t(), keyword) :: {:ok, String.t()} | {:error, term}
+  @spec encode(VNextGenAI.Graph.Node.t(), keyword) :: {:ok, String.t()} | {:error, term}
   def encode(graph_element, options), do: encode(graph_element, options, %{})
 
-  @spec encode(GenAI.Graph.Node.t(), keyword, map) :: {:ok, String.t()} | {:error, term}
+  @spec encode(VNextGenAI.Graph.Node.t(), keyword, map) :: {:ok, String.t()} | {:error, term}
   def encode(graph_element, options, state) do
-    case GenAI.Graph.MermaidProtocol.Helpers.diagram_type(options) do
+    case VNextGenAI.Graph.MermaidProtocol.Helpers.diagram_type(options) do
       :state_diagram_v2 -> state_diagram_v2(graph_element, options, state)
       x -> {:error, {:unsupported_diagram, x}}
     end
   end
 
-  @spec state_diagram_v2(GenAI.Graph.Node.t(), keyword, map) :: {:ok, String.t()} | {:error, term}
+  @spec state_diagram_v2(VNextGenAI.Graph.Node.t(), keyword, map) :: {:ok, String.t()} | {:error, term}
   def state_diagram_v2(graph_node, options, state)
 
   def state_diagram_v2(graph_node, _, state) do
-    identifier = GenAI.Graph.MermaidProtocol.Helpers.mermaid_id(graph_node.id)
+    identifier = VNextGenAI.Graph.MermaidProtocol.Helpers.mermaid_id(graph_node.id)
     container = List.first(state[:container])
 
     n =
@@ -81,9 +81,9 @@ defimpl GenAI.Graph.MermaidProtocol, for: GenAI.Graph.Node do
           links,
           fn link_id ->
             # TODO - Node protocol needs to return a get_link method that accepts node, container
-            {:ok, link} = GenAI.Graph.link(container, link_id)
-            {:ok, R.Link.connector(node: n)} = GenAI.Graph.Link.target_connector(link)
-            "#{identifier} --> #{GenAI.Graph.MermaidProtocol.Helpers.mermaid_id(n)}"
+            {:ok, link} = VNextGenAI.Graph.link(container, link_id)
+            {:ok, R.Link.connector(node: n)} = VNextGenAI.Graph.Link.target_connector(link)
+            "#{identifier} --> #{VNextGenAI.Graph.MermaidProtocol.Helpers.mermaid_id(n)}"
           end
         )
       end)

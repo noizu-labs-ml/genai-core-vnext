@@ -1,10 +1,10 @@
-defmodule GenAITest do
-  # import GenAI.Test.Support.Common
+defmodule VNextGenAITest do
+  # import VNextGenAI.Test.Support.Common
   use ExUnit.Case,
     async: true
 
   require Logger
-  doctest GenAI
+  doctest VNextGenAI
 
   #  defp context(options \\ nil)
   #  defp context(_) do

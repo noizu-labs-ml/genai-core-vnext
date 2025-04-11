@@ -1,15 +1,15 @@
-defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
+defmodule VNextGenAI.Graph.NodeProtocol.DefaultProvider do
   @moduledoc """
-  Default provider for GenAI.Graph.NodeProtocol.
+  Default provider for VNextGenAI.Graph.NodeProtocol.
   Uses function_exported? to invoke the passed module's implementation if any for calls.
   """
 
-  alias GenAI.Graph.Link
-  alias GenAI.Graph.Types, as: G
-  alias GenAI.Records, as: R
-  alias GenAI.Types, as: T
+  alias VNextGenAI.Graph.Link
+  alias VNextGenAI.Graph.Types, as: G
+  alias VNextGenAI.Records, as: R
+  alias VNextGenAI.Types, as: T
 
-  require GenAI.Records.Link
+  require VNextGenAI.Records.Link
 
   # -------------------------
   # id/1
@@ -234,7 +234,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
             Enum.map(
               link_ids,
               fn link_id ->
-                {:ok, link} = GenAI.Graph.link(graph, link_id)
+                {:ok, link} = VNextGenAI.Graph.link(graph, link_id)
                 link
               end
             )
@@ -271,7 +271,7 @@ defmodule GenAI.Graph.NodeProtocol.DefaultProvider do
             Enum.map(
               link_ids,
               fn link_id ->
-                {:ok, link} = GenAI.Graph.link(graph, link_id)
+                {:ok, link} = VNextGenAI.Graph.link(graph, link_id)
                 link
               end
             )

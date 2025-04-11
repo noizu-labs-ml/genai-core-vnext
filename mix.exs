@@ -1,10 +1,10 @@
-defmodule GenAI.MixProject do
+defmodule VNextGenAI.MixProject do
   use Mix.Project
 
   def project do
     [
       app: :genai_core,
-      name: "GenAI Wrapper (core library)",
+      name: "VNextGenAI Wrapper (core library)",
       description: description(),
       package: package(),
       version: "0.1.0",
@@ -13,7 +13,7 @@ defmodule GenAI.MixProject do
       deps: deps(),
       elixirc_paths: elixirc_paths(Mix.env()),
       docs: [
-        main: "GenAI",
+        main: "VNextGenAI",
         extras: [
           "README.md",
           "CHANGELOG.md",
